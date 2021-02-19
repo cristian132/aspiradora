@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <style>
+      #container {
+        display: grid;
+        grid-template-columns: repeat(2, 119.3px);
+        justify-content: center;
+      }
+      span {
+        border: 1px solid black;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="container"></div>
+    <script>
+      const posicion = [
+        [2, 0],
+        [" ", " "],
+      ];
+      var pasos = [[" ", " ", " ", " "]];
+
+      function pasoA(index, column) {
+        switch (column) {
+          case 1:
+            pasos[index] = "Sucio";
+            break;
+          case 2:
+            pasos[index] = "Aspiradora";
+            break;
+          default:
+            pasos[index] = "Limpio";
+            break;
+        }
+      }
+
+      function render(content, container) {
+        const el = new Image();
+        switch (content) {
+          case 0:
+            el.src = "./Blanco.png";
+            break;
+          case 1:
+            el.src = "./Basura.png";
+            break;
+          case 2:
+            el.src = "./aspiradora.png";
+            break;
+        }
+        container.append(el);
+      }
+
+      var num = "";
+      posicion.forEach((row, indexRow) => {
+        row.forEach((column, indexColumn) => {
+          if (num === "") {
+            num = 0;
+          } else {
+            num = num + 1;
+          }
+
+          switch (column) {
+            case " ":
+              numero = Math.random();
+              column = Math.round(numero);
+              render(column, window.container);
+              pasoA(num, column);
+              break;
+            default:
+              render(column, window.container);
+              pasoA(num, column);
+              break;
+          }
+        });
+      });
+
+      var salir = 0;
+      var contador = "";
+
+      do {
+        posicion.forEach((row, indexRow) => {
+          row.forEach((column, indexColumn) => {
+            if (contador < 4) {
+              contador = 0;
+            }
+            if (contador === "") {
+              contador = 0;
+            } else {
+              contador = contador + 1;
+            }
+
+            switch (column) {
+              case "Sucio":
+                if (contador === 2) {
+                  console.log("Aspiradora se mueve abajo");
+                  column = 2;
+                  render(column, window.container);
+                  pasoA(contador, column);
+                }
+                break;
+              case "Limpio":
+                break;
+              case "Aspiradora":
+                break;
+            }
+          });
+        });
+      } while (salir === 1);
+
+      console.log(posicion);
+      console.log(pasos);
+    </script>
+  </body>
+</html>
